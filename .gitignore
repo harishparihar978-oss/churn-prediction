@@ -1,0 +1,45 @@
+# ==================================================
+# Project: Netflix Churn Prediction (ML + Streamlit)
+# ==================================================
+
+# 🔐 Secrets (NEVER commit API keys)
+.streamlit/secrets.toml
+
+# 🧠 ML model artifacts (generated files)
+model/*.pkl
+
+# 🧹 Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# ⚙️ Virtual environments
+venv/
+.env/
+env/
+
+# 📊 Data files (optional - recommended to ignore)
+data/
+raw.csv
+# 📝 Logs
+*.log
+
+# 📦 Build / distribution files
+build/
+dist/
+*.egg-info/
+
+# 🖥️ OS-specific files
+.DS_Store
+Thumbs.db
+
+# 🧪 Jupyter Notebook checkpoints (if used)
+.ipynb_checkpoints/
+
+# 🔧 IDE/editor settings
+.vscode/
+.idea/
+
+# 🔄 Temporary files
+*.tmp
+*.swp
