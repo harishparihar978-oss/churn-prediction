@@ -242,4 +242,6 @@ if page == "Analytics":
 
     st.divider()
     with st.expander("🔎 View Raw Data (first 100 rows)"):
-        st.dataframe(df.head(100), use_container_width=True)
+        st.dataframe(df.head(100), use_container_width=True)          
+  if model not found:
+    run train.py
