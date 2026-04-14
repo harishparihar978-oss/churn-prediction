@@ -9,7 +9,12 @@ from imblearn.over_sampling import SMOTE
 from preprocess import preprocess
 
 # 1. Load & preprocess
-df, target, encoders, feature_cols = preprocess("data/raw.csv")
+import os
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DATA_PATH = os.path.join(BASE_DIR, "data", "raw.csv")
+
+df, target, encoders, feature_cols = preprocess(DATA_PATH)
 
 X = df[feature_cols]
 y = df[target]
