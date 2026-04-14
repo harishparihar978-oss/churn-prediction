@@ -18,9 +18,6 @@ venv/
 .env/
 env/
 
-# 📊 Data files (optional - recommended to ignore)
-data/
-raw.csv
 # 📝 Logs
 *.log
 
