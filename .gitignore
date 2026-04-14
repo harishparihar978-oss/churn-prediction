@@ -5,8 +5,7 @@
 # 🔐 Secrets (NEVER commit API keys)
 .streamlit/secrets.toml
 
-# 🧠 ML model artifacts (generated files)
-model/*.pkl
+
 
 # 🧹 Python cache files
 __pycache__/
