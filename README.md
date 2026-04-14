@@ -2,163 +2,151 @@
 
 ## 🚀 Project Overview
 
-This project is an **end-to-end Machine Learning system** that predicts customer churn for a subscription-based service like Netflix.
+This project is an **end-to-end Machine Learning application** designed to predict customer churn in a subscription-based service like Netflix.
 
-It combines **data preprocessing, model training, and deployment** into an interactive dashboard that not only predicts churn but also provides **AI-driven business insights**.
+It integrates **data preprocessing, model training, and deployment** into an interactive dashboard that not only predicts churn but also provides **actionable business insights using a custom rule-based AI system**.
 
 ---
 
 ## 🔥 Key Features
 
 * 🔮 Predict customer churn with probability score
-* 📊 Interactive Streamlit dashboard
-* 🧠 AI-generated retention strategies using OpenAI
-* 📈 Customer analytics and visualization
-* 🌲 Feature importance insights
-* ⚡ Real-time user input prediction
+* 📊 Interactive dashboard built with Streamlit
+* 🧠 Simulated AI insights for retention strategies (no API cost)
+* 📈 Real-time analytics and visualizations
+* 🌲 Feature importance analysis
+* ⚡ Dynamic user input-based predictions
 
 ---
 
 ## 🧠 Tech Stack
 
-**Languages & Libraries:**
+### 🔹 Languages & Libraries
 
 * Python
 * Pandas, NumPy
 * Scikit-learn, XGBoost
 * Matplotlib
 
-**Frameworks & Tools:**
+### 🔹 Tools & Frameworks
 
-* Streamlit (Frontend + Deployment)
-* OpenAI API (AI Insights)
+* Streamlit (UI + Deployment)
 * Joblib (Model serialization)
+* SMOTE (Handling class imbalance)
 
 ---
 
 ## 📊 Machine Learning Pipeline
 
-1. **Data Preprocessing**
+### 1. Data Preprocessing
 
-   * Handles missing values
-   * Encodes categorical variables
-   * Removes data leakage columns
+* Handles missing values and data cleaning
+* Encodes categorical features using LabelEncoder
+* Removes leakage columns (CLTV, Churn Score, etc.)
 
-2. **Model Training**
+---
 
-   * Algorithm: XGBoost Classifier
-   * Handles class imbalance using SMOTE
-   * Stratified train-test split
+### 2. Model Training
 
-3. **Evaluation**
+* Algorithm: **XGBoost Classifier**
+* Handles imbalance using **SMOTE**
+* Uses **stratified train-test split**
 
-   * Accuracy & ROC-AUC score
-   * Classification report
+---
 
-4. **Model Saving**
+### 3. Model Evaluation
 
-   * `model.pkl`
-   * `encoders.pkl`
-   * `metadata.json`
+* Accuracy Score
+* ROC-AUC Score
+* Classification Report
+
+---
+
+### 4. Model Artifacts
+
+* `model.pkl` → trained model
+* `encoders.pkl` → categorical encoders
+* `metadata.json` → feature configuration
 
 ---
 
 ## 🌐 Live Demo
 
-👉 **[Click here to view the deployed app](YOUR_STREAMLIT_DEPLOYMENT_LINK_HERE)**
+👉 **[Click here to view the deployed app](https://churn-prediction-caiehl559g4ura7pbcc9df.streamlit.app/)**
 
 ---
 
 ## 📁 Project Structure
 
 ```
-netflix-churn-prediction/
+churn-prediction/
 │
 ├── app.py                  # Streamlit dashboard
 ├── train.py                # Model training pipeline
 ├── preprocess.py           # Data preprocessing
 ├── requirements.txt        # Dependencies
-├── README.md               # Project documentation
+├── README.md
 │
-├── data/                   # Dataset (not included)
+├── data/                   # Dataset (optional / local use)
 │   └── raw.csv
 │
-├── model/                  # Model artifacts (not included)
+├── model/                  # Trained model files
 │   ├── model.pkl
 │   ├── encoders.pkl
 │   └── metadata.json
-│
-└── .streamlit/
-    └── secrets.toml        # API key (ignored)
-```
-
 ---
 
 ## ⚙️ How to Run Locally
 
 ```bash
 git clone https://github.com/harishparihar978-oss/churn-prediction.git
-cd netflix-churn-prediction
+cd churn-prediction
 
 pip install -r requirements.txt
 
-# Train model (if not available)
+# Train the model
 python train.py
 
-# Run app
+# Run the dashboard
 streamlit run app.py
 ```
 
 ---
 
-## 🔐 Environment Variables
+## ⚠️ Important Notes
 
-Create a file:
-
-```
-.streamlit/secrets.toml
-```
-
-Add your OpenAI API key:
-
-```toml
-OPENAI_API_KEY="your-api-key-here"
-```
-
----
-
-## ⚠️ Notes
-
-* Model files (`.pkl`) and dataset are not included due to size
-* Run `train.py` to generate model files locally
-* Keep API keys secure using `.gitignore`
+* Model files may not be included → generate using `train.py`
+* Dataset may not be included due to size/privacy
+* This project uses **simulated AI insights (no external API required)**
+* `.gitignore` is configured to protect sensitive files
 
 ---
 
 ## 💡 Business Impact
 
-This project helps businesses:
+This solution helps businesses:
 
-* Identify high-risk customers
-* Reduce churn rate
-* Improve retention strategies
-* Make data-driven decisions
+* Identify customers at high risk of churn
+* Take proactive retention actions
+* Improve customer lifetime value
+* Make data-driven strategic decisions
 
 ---
 
 ## 🌟 Why This Project Stands Out
 
-✔ End-to-end ML pipeline
-✔ Real-world business use case
-✔ Interactive dashboard
-✔ AI-powered insights
-✔ Deployment-ready
+✔ End-to-end ML pipeline (data → model → deployment)
+✔ Real-world business problem (customer churn)
+✔ Interactive and user-friendly dashboard
+✔ No dependency on paid APIs
+✔ Clean, production-ready architecture
 
 ---
 
 ## 👨‍💻 Author
 
 **Harish Parihar**
+Aspiring Data Scientist | Machine Learning Enthusiast
 
 ---
 
