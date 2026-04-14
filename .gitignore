@@ -2,8 +2,6 @@
 # Project: Netflix Churn Prediction (ML + Streamlit)
 # ==================================================
 
-# 🔐 Secrets (NEVER commit API keys)
-.streamlit/secrets.toml
 
 
 
