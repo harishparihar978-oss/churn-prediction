@@ -34,12 +34,10 @@ def ensure_model():
         st.warning("⚠️ Model not found. Training model... Please wait.")
 
         try:
-            subprocess.run(["python", "train.py"], check=True)
-            st.success("✅ Model trained successfully!")
+            model, encoders, meta = load_model()
         except Exception as e:
-            st.error(f"❌ Training failed: {e}")
+            st.error("❌ Model not found. Please upload model files.")
             st.stop()
-
 
 # Run this BEFORE loading model
 ensure_model()
