@@ -22,29 +22,11 @@ def load_model():
         meta = json.load(f)
     return model, encoders, meta
 
-def ensure_model():
-    """Train model if files are missing."""
-    required_files = [
-        "model/model.pkl",
-        "model/encoders.pkl",
-        "model/metadata.json"
-    ]
-
-    if not all(os.path.exists(f) for f in required_files):
-        st.warning("⚠️ Model not found. Training model... Please wait.")
-
-        try:
-            model, encoders, meta = load_model()
-        except Exception as e:
-            st.error("❌ Model not found. Please upload model files.")
-            st.stop()
-
-# Run this BEFORE loading model
-ensure_model()
-
-# Now load model safely
-model, encoders, meta = load_model()
-
+try:
+    model, encoders, meta = load_model()
+except Exception as e:
+    st.error("❌ Model files not found. Please check deployment.")
+    st.stop()
 
 feature_cols = meta["feature_cols"]
 cat_cols     = meta["cat_cols"]
