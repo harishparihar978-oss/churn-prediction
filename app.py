@@ -6,7 +6,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import streamlit as st
-from openai import OpenAI
 
 # ── CONFIG ────────────────────────────────────────────────────────────────────
 st.set_page_config(page_title="Netflix Churn Dashboard", layout="wide")
@@ -58,17 +57,9 @@ if target is None:
     st.stop()
 
 
-# ── OPENAI ────────────────────────────────────────────────────────────────────
-
-try:
-    client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
-except Exception:
-    client = None
-
-
 # ── HELPERS ───────────────────────────────────────────────────────────────────
 def encode_input(raw_inputs: dict) -> np.ndarray:
-    """FIX 7: apply saved LabelEncoders before passing data to the model."""
+    """apply saved LabelEncoders before passing data to the model."""
     row = []
     for col in feature_cols:
         val = raw_inputs[col]
@@ -80,22 +71,45 @@ def encode_input(raw_inputs: dict) -> np.ndarray:
     return np.array(row).reshape(1, -1)
 
 
+# ── 🔁 REPLACED AI FUNCTION (NO OPENAI) ────────────────────────────────────────
 def ai_insight(inputs: dict, pred: int) -> str:
-    if client is None:
-        return "⚠️ OpenAI API key not configured in `.streamlit/secrets.toml`."
-    prompt = (
-        f"You are a customer-retention expert.\n\n"
-        f"Customer profile:\n{json.dumps(inputs, indent=2)}\n\n"
-        f"Churn prediction: {'WILL CHURN' if pred == 1 else 'WILL STAY'}\n\n"
-        "In 3–4 sentences explain the likely churn drivers, "
-        "then suggest 2 concrete retention strategies."
+    insights = []
+    strategies = []
+
+    if pred == 1:
+        insights.append("Customer is likely to churn based on behavior patterns.")
+
+        if inputs.get("Contract") == "Month-to-month":
+            insights.append("Month-to-month contract increases churn risk.")
+            strategies.append("Offer discount for long-term subscription.")
+
+        if inputs.get("Tenure Months", 0) < 6:
+            insights.append("Low tenure indicates weak engagement.")
+            strategies.append("Improve onboarding experience.")
+
+        if inputs.get("Monthly Charges", 0) > 70:
+            insights.append("High monthly charges may cause dissatisfaction.")
+            strategies.append("Provide personalized pricing or bundles.")
+
+        if inputs.get("Tech Support") == "No":
+            insights.append("Lack of tech support may frustrate users.")
+            strategies.append("Offer free tech support.")
+
+    else:
+        insights.append("Customer is likely to stay based on stable usage.")
+
+        if inputs.get("Contract") != "Month-to-month":
+            insights.append("Long-term contract improves retention.")
+
+        if inputs.get("Tenure Months", 0) > 12:
+            insights.append("High tenure shows strong loyalty.")
+
+        strategies.append("Maintain service quality and offer loyalty rewards.")
+
+    return (
+        "🧠 Insights:\n- " + "\n- ".join(insights) +
+        "\n\n💡 Recommended Actions:\n- " + "\n- ".join(strategies)
     )
-    res = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[{"role": "user", "content": prompt}],
-        max_tokens=300,
-    )
-    return res.choices[0].message.content
 
 
 # ── UI ────────────────────────────────────────────────────────────────────────
@@ -109,7 +123,6 @@ page = st.sidebar.radio("Navigation", ["Prediction", "Analytics"])
 if page == "Prediction":
     st.subheader("🔮 Predict Customer Churn")
 
-    # FIX 5 & 6: build inputs from metadata; categorical → selectbox
     raw_inputs: dict = {}
     left, right = st.columns(2)
 
@@ -163,17 +176,15 @@ if page == "Analytics":
     st.divider()
     col1, col2 = st.columns(2)
 
-    # Churn distribution
     with col1:
         st.markdown("### Churn Distribution")
         counts = df[target].value_counts().sort_index()
         fig1, ax1 = plt.subplots()
         ax1.pie(counts, labels=["Stayed", "Churned"],
                 autopct="%1.1f%%", colors=["#2ecc71", "#e74c3c"], startangle=90)
-        st.pyplot(fig1)   # FIX 8: pass fig, not plt module
+        st.pyplot(fig1)
         plt.close(fig1)
 
-    # Churn rate by contract type
     with col2:
         st.markdown("### Churn Rate by Contract Type")
         contract_churn = df.groupby("Contract")[target].mean().sort_values(ascending=False)
@@ -191,7 +202,6 @@ if page == "Analytics":
     st.divider()
     col3, col4 = st.columns(2)
 
-    # Tenure distribution
     with col3:
         st.markdown("### Tenure Distribution")
         fig3, ax3 = plt.subplots()
@@ -205,7 +215,6 @@ if page == "Analytics":
         st.pyplot(fig3)
         plt.close(fig3)
 
-    # Monthly Charges distribution
     with col4:
         st.markdown("### Monthly Charges Distribution")
         fig4, ax4 = plt.subplots()
@@ -221,7 +230,6 @@ if page == "Analytics":
 
     st.divider()
 
-    # Feature importance — FIX 9: guarded with hasattr
     st.markdown("### 🌲 Feature Importance")
     if hasattr(model, "feature_importances_"):
         imp_df = pd.DataFrame({"Feature": feature_cols,
@@ -238,5 +246,4 @@ if page == "Analytics":
 
     st.divider()
     with st.expander("🔎 View Raw Data (first 100 rows)"):
-        st.dataframe(df.head(100), use_container_width=True)          
-  
+        st.dataframe(df.head(100), use_container_width=True)
