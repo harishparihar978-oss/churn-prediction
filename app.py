@@ -1,6 +1,6 @@
-
+import os
+import subprocess
 import json
-
 import joblib
 import matplotlib.pyplot as plt
 import numpy as np
@@ -22,15 +22,31 @@ def load_model():
         meta = json.load(f)
     return model, encoders, meta
 
+def ensure_model():
+    """Train model if files are missing."""
+    required_files = [
+        "model/model.pkl",
+        "model/encoders.pkl",
+        "model/metadata.json"
+    ]
 
-try:
-    model, encoders, meta = load_model()
-except FileNotFoundError:
-    st.error(
-        "❌ Model files not found in `model/`. "
-        "Please run `python train.py` first to generate them."
-    )
-    st.stop()
+    if not all(os.path.exists(f) for f in required_files):
+        st.warning("⚠️ Model not found. Training model... Please wait.")
+
+        try:
+            subprocess.run(["python", "train.py"], check=True)
+            st.success("✅ Model trained successfully!")
+        except Exception as e:
+            st.error(f"❌ Training failed: {e}")
+            st.stop()
+
+
+# Run this BEFORE loading model
+ensure_model()
+
+# Now load model safely
+model, encoders, meta = load_model()
+
 
 feature_cols = meta["feature_cols"]
 cat_cols     = meta["cat_cols"]
